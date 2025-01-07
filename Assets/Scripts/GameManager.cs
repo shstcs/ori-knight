@@ -1,14 +1,26 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private static GameManager instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            if(instance == null)
+            {
+                instance = FindAnyObjectByType<GameManager>();
+            }
+            return instance;
+        }
+    }
+
     void Start()
     {
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         
