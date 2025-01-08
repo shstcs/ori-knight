@@ -19,4 +19,4 @@ MonoBehaviour:
   wanderTime: 3
   attackPreDelay: 0.2
   attackAfterDelay: 1
-  attackDmg: 10
+  attackDmg: 1

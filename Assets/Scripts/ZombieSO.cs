@@ -13,5 +13,5 @@ public class ZombieSO : ScriptableObject
     [Header("Combat")]
     public float attackPreDelay = 0.2f;
     public float attackAfterDelay = 1f;
-    public int attackDmg = 10;
+    public int attackDmg = 1;
 }

@@ -12,7 +12,7 @@ public class PlayerControl : MonoBehaviour,IAttackable
     private PolygonCollider2D polygonCollider;
     private Animator anim;
 
-    [SerializeField] private PlayerSO playerSO;
+    public PlayerSO playerSO;
     [SerializeField] private BoxCollider2D attackRange;
     private Vector2 dir = Vector2.zero;
     private int jumpCount = 0;

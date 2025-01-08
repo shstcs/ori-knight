@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayerSO : ScriptableObject
 {
     [Header("Stats")]
-    public int maxHealth = 100;
+    public int maxHealth = 3;
+    public int maxMana = 3;
     public float speedModifier = 5.0f;
     public float jumpForce = 10f;
     public int extrajump = 1;

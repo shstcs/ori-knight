@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static UnityAction<int> OnDamaged;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
@@ -26,6 +27,11 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public static void CallDamage(int damage)
+    {
+        OnDamaged?.Invoke(damage);
     }
 
     public void OnStartButton()

@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a333d7c703bebef4eb166c74edffbd77, type: 3}
   m_Name: PlayerSO
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  maxHealth: 3
+  maxMana: 3
   speedModifier: 5
   jumpForce: 10
-  jumpCount: 0
   extrajump: 1
   attackDmg: 10
   criticalChance: 0.1
