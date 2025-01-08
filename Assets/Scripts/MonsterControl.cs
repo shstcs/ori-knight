@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class MonsterControl : MonoBehaviour, IAttackable
+public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
 {
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
@@ -15,6 +15,7 @@ public class MonsterControl : MonoBehaviour, IAttackable
     private int dir = 1;
     private float curTime = 0f;
     private bool isAttacking = false;
+    private bool isDead = false;
     private float atkTime = 0;
     private int curHP;
 
@@ -40,7 +41,7 @@ public class MonsterControl : MonoBehaviour, IAttackable
 
     private void Wander()
     {
-        if (!isAttacking)
+        if (!isAttacking && !isDead)
         {
             Collider2D hitbox = Physics2D.OverlapCircle(transform.position, zombieSO.detectRange, playerLayer);
             if (hitbox != null && hitbox.CompareTag("Player"))
@@ -57,7 +58,7 @@ public class MonsterControl : MonoBehaviour, IAttackable
                     rb.linearVelocity = new Vector2(dir * zombieSO.runSpeed, rb.linearVelocity.y);
                 }
             }
-            else
+            else if (!isDead)
             {
                 rb.linearVelocity = new Vector2(dir * zombieSO.moveSpeed, rb.linearVelocity.y);
                 curTime += Time.deltaTime;
@@ -66,6 +67,10 @@ public class MonsterControl : MonoBehaviour, IAttackable
                     curTime = 0;
                     dir = -1 * dir;
                 }
+            }
+            else
+            {
+                rb.linearVelocity = Vector2.zero;
             }
         }
         else
@@ -93,6 +98,8 @@ public class MonsterControl : MonoBehaviour, IAttackable
         if (collision.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerControl>().TakeDamage(zombieSO.attackDmg);
+            collision.gameObject.GetComponent<PlayerControl>().Knockback(transform.position);
+
             Debug.Log("Player Damaged!");
         }
     }
@@ -100,11 +107,36 @@ public class MonsterControl : MonoBehaviour, IAttackable
     public void TakeDamage(int damage)
     {
         Debug.Log("Monster Damaged : " + damage);
-        curHP -= damage; 
-
+        curHP -= damage;
+        anim.SetTrigger("Hurt");
+        anim.SetBool("isHurted", true);
+        StartCoroutine(DamagedColorChange());
         if (curHP <= 0)
         {
+            anim.SetTrigger("Die");
+            anim.SetBool("isDead", true);
+            isDead = true;
 
         }
+    }
+
+    public void Dead()
+    {
+        gameObject.SetActive(false);
+        Destroy(gameObject);
+    }
+
+    public void Knockback(Vector3 pos)
+    {
+        rb.AddForce(new Vector2(0, 3f), ForceMode2D.Impulse);
+    }
+
+    public IEnumerator DamagedColorChange()
+    {
+        Color original = spriteRenderer.color;
+        spriteRenderer.color = new Color(.5f, .5f, .5f);
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = original;
+        anim.SetBool("isHurted", false);
     }
 }

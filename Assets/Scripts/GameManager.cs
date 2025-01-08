@@ -1,5 +1,7 @@
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -18,11 +20,16 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        
+        DontDestroyOnLoad(gameObject);
     }
 
     void Update()
     {
         
+    }
+
+    public void OnStartButton()
+    {
+        SceneManager.LoadScene("inGame");
     }
 }

@@ -212,9 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9783a6fa39ca73348a5f25817c22bd6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speedModifier: 5
-  jumpForce: 10
-  extrajump: 1
+  playerSO: {fileID: 11400000, guid: e8a5b44d9625b0344a379a65d80140d3, type: 2}
   attackRange: {fileID: 3303448466502423885}
 --- !u!114 &7452616502576156618
 MonoBehaviour:

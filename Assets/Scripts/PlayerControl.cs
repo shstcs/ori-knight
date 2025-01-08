@@ -1,4 +1,5 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -129,6 +130,7 @@ public class PlayerControl : MonoBehaviour,IAttackable
         if (collision.CompareTag("Mob"))
         {
             collision.gameObject.GetComponent<MonsterControl>().TakeDamage(curDamage);
+            collision.gameObject.GetComponent<MonsterControl>().Knockback(transform.position);
         }
     }
 
@@ -136,9 +138,23 @@ public class PlayerControl : MonoBehaviour,IAttackable
     {
         Debug.Log("Player Damaged : " + damage);
         curHP -= damage;
-        if(curHP <= 0)
+        anim.SetTrigger("Hurt");
+        StartCoroutine(DamagedColorChange());
+        if (curHP <= 0)
         {
-
+            // TODO. 게임오버 창 띄우기
         }
+    }
+
+    public void Knockback(Vector3 pos)
+    {
+        rb.AddForce(new Vector2(0,3f), ForceMode2D.Impulse);
+    }
+    public IEnumerator DamagedColorChange()
+    {
+        Color original = spriteRenderer.color;
+        spriteRenderer.color = new Color(.5f, .5f, .5f);
+        yield return new WaitForSeconds(0.2f);
+        spriteRenderer.color = original;
     }
 }

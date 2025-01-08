@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3685150901644163185}
   - component: {fileID: 1006951530591921557}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: AttackRange
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,10 +293,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3afae0a0c80f3a24b97f5d0c375d395a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
-  runSpeed: 1.5
-  dir: 1
-  detectRange: 2
+  zombieSO: {fileID: 11400000, guid: e4af320f98fa8714daf0888ccfcdc9e4, type: 2}
   playerLayer:
     serializedVersion: 2
     m_Bits: 8
