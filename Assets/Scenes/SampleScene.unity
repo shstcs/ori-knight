@@ -4835,13 +4835,9 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 294719622164483031, guid: 8098e53e7188fba40967ed838382cd70, type: 3}
-      propertyPath: detectRange
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 294719622164483031, guid: 8098e53e7188fba40967ed838382cd70, type: 3}
-      propertyPath: playerLayer.m_Bits
-      value: 8
-      objectReference: {fileID: 0}
+      propertyPath: zombieSO
+      value: 
+      objectReference: {fileID: 11400000, guid: e4af320f98fa8714daf0888ccfcdc9e4, type: 2}
     - target: {fileID: 6949297263760456395, guid: 8098e53e7188fba40967ed838382cd70, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.61
@@ -4882,6 +4878,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7358275184852955378, guid: 8098e53e7188fba40967ed838382cd70, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7728349059780043896, guid: 8098e53e7188fba40967ed838382cd70, type: 3}
       propertyPath: m_Name
       value: Zombie
@@ -4901,10 +4901,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2656739778576323117, guid: c47d93da51d68c147ab7e728c5237457, type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2656739778576323117, guid: c47d93da51d68c147ab7e728c5237457, type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5364327045066111612, guid: c47d93da51d68c147ab7e728c5237457, type: 3}
@@ -4946,6 +4942,14 @@ PrefabInstance:
     - target: {fileID: 5364327045066111612, guid: c47d93da51d68c147ab7e728c5237457, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7009357764341991176, guid: c47d93da51d68c147ab7e728c5237457, type: 3}
+      propertyPath: playerSO
+      value: 
+      objectReference: {fileID: 11400000, guid: e8a5b44d9625b0344a379a65d80140d3, type: 2}
+    - target: {fileID: 7014662669831291221, guid: c47d93da51d68c147ab7e728c5237457, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

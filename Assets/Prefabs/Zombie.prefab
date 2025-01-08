@@ -294,5 +294,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 1
+  runSpeed: 1.5
   dir: 1
+  detectRange: 2
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 8
   attackRange: {fileID: 1006951530591921557}

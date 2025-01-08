@@ -4,19 +4,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.iOS;
 
-public class PlayerControl : MonoBehaviour
+public class PlayerControl : MonoBehaviour,IAttackable
 {
-    Rigidbody2D rb;
-    Vector2 dir = Vector2.zero;
+    private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private PolygonCollider2D polygonCollider;
-    Animator anim;
-    public float speedModifier = 5.0f;
-    public float jumpForce = 10f;
-    private int jumpCount = 0;
-    public int extrajump = 1;
-    private bool isGrounded = true;
+    private Animator anim;
+
+    [SerializeField] private PlayerSO playerSO;
     [SerializeField] private BoxCollider2D attackRange;
+    private Vector2 dir = Vector2.zero;
+    private int jumpCount = 0;
+    private bool isGrounded = true;
+    private int curDamage;
+    private int curHP;
 
     private void Awake()
     {
@@ -29,13 +30,15 @@ public class PlayerControl : MonoBehaviour
     private void Start()
     {
         attackRange.enabled = false;
+        curDamage = playerSO.attackDmg;
+        curHP = playerSO.maxHealth;
     }
 
     private void Update()
     {
         Camera.main.transform.position = new Vector3 (transform.position.x, transform.position.y, Camera.main.transform.position.z);
         
-        rb.linearVelocity = new Vector2(dir.x * speedModifier, rb.linearVelocity.y);
+        rb.linearVelocity = new Vector2(dir.x * playerSO.speedModifier, rb.linearVelocity.y);
         if(dir.x > 0)
         {
             spriteRenderer.flipX = false;
@@ -75,11 +78,11 @@ public class PlayerControl : MonoBehaviour
             if(isGrounded)
             {
                 isGrounded = false;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
             }
-            else if(jumpCount < extrajump)
+            else if(jumpCount < playerSO.extrajump)
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
                 jumpCount++;
             }
         }
@@ -125,8 +128,17 @@ public class PlayerControl : MonoBehaviour
     {
         if (collision.CompareTag("Mob"))
         {
-            //TODO 적 피해 구현
-            Debug.Log("Damaged!");
+            collision.gameObject.GetComponent<MonsterControl>().TakeDamage(curDamage);
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Debug.Log("Player Damaged : " + damage);
+        curHP -= damage;
+        if(curHP <= 0)
+        {
+
         }
     }
 }
