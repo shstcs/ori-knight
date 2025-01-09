@@ -12,20 +12,33 @@ public class InGameHUD : MonoBehaviour
     private void Awake()
     {
         GameManager.OnDamaged += DecreaseHP;
-    }
-    void Start()
-    {
-        curHP = player.GetComponent<PlayerControl>().playerSO.maxHealth;
-        curMP = player.GetComponent<PlayerControl>().playerSO.maxMana;
+        GameManager.OnHeal += Healing;
+        GameManager.OnManaUp += ManaGain;
     }
 
     public void DecreaseHP(int damage)
     {
+        curHP = player.GetComponent<PlayerControl>().showHPMP().Item1;
+
         for (int i = 1; i <= damage; i++)
         {
             if (curHP < i) break;
             heart[curHP - i].enabled = false;
         }
-        curHP -= damage;
+    }
+
+    public void Healing()
+    {
+        (curHP, curMP) = player.GetComponent<PlayerControl>().showHPMP();
+
+        heart[curHP].enabled = true;
+        mana[curMP - 1].enabled = false;
+    }
+
+    public void ManaGain()
+    {
+        curMP = player.GetComponent<PlayerControl>().showHPMP().Item2;
+
+        mana[curMP-1].enabled = true;
     }
 }

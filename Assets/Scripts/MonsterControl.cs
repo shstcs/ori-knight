@@ -98,13 +98,11 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !collision.gameObject.GetComponent<PlayerControl>().isDashing)
         {
             GameManager.CallDamage(zombieSO.attackDmg);
             collision.gameObject.GetComponent<PlayerControl>().TakeDamage(zombieSO.attackDmg);
             collision.gameObject.GetComponent<PlayerControl>().Knockback(transform.position);
-
-            Debug.Log("Player Damaged!");
         }
     }
 

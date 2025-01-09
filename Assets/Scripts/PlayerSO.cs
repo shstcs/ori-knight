@@ -8,9 +8,15 @@ public class PlayerSO : ScriptableObject
     public int maxMana = 3;
     public float speedModifier = 5.0f;
     public float jumpForce = 10f;
-    public int extrajump = 1;
+    public int extrajump = 0;
+    public bool canHeal = false;
+    public bool canDash = false;
+    public bool canClimb = false;
 
     [Header("Combat")]
     public int attackDmg = 10;
+    public float attackSpeed = 0.5f;
     public float criticalChance = 0.1f;
+    public int manaRegainCount = 10;
+    public float DashRange = 3f;
 }

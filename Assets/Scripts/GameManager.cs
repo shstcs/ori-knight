@@ -19,19 +19,24 @@ public class GameManager : MonoBehaviour
     }
 
     public static UnityAction<int> OnDamaged;
+    public static UnityAction OnHeal;
+    public static UnityAction OnManaUp;
     void Start()
     {
         DontDestroyOnLoad(gameObject);
     }
 
-    void Update()
-    {
-        
-    }
-
     public static void CallDamage(int damage)
     {
         OnDamaged?.Invoke(damage);
+    }
+    public static void CallHeal()
+    {
+        OnHeal?.Invoke();
+    }
+    public static void CallManaUp()
+    {
+        OnManaUp?.Invoke();
     }
 
     public void OnStartButton()

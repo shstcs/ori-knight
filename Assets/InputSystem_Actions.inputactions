@@ -45,7 +45,7 @@
                     "name": "Crouch",
                     "type": "Button",
                     "id": "27c5f898-bc57-4ee1-8800-db469aca5fe3",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -78,10 +78,19 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sprint",
+                    "name": "Dash",
                     "type": "Button",
                     "id": "641cd816-40e6-41b4-8c3d-04687c349290",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Heal",
+                    "type": "Button",
+                    "id": "505d430c-9025-41e5-9ea5-15d5df5f802d",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -348,7 +357,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Sprint",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -359,7 +368,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Sprint",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -370,7 +379,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "XR",
-                    "action": "Sprint",
+                    "action": "Dash",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -470,6 +479,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4b7955cc-ecaa-48b7-8105-10afcfa00593",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Heal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
