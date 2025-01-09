@@ -37,7 +37,7 @@ public class PlayerControl : MonoBehaviour,IAttackable
 
     private void Update()
     {
-        Camera.main.transform.position = new Vector3 (transform.position.x, transform.position.y, Camera.main.transform.position.z);
+        //Camera.main.transform.position = new Vector3 (transform.position.x, transform.position.y, Camera.main.transform.position.z);
         
         rb.linearVelocity = new Vector2(dir.x * playerSO.speedModifier, rb.linearVelocity.y);
         if(dir.x > 0)
