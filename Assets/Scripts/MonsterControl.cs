@@ -46,6 +46,7 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
             Collider2D hitbox = Physics2D.OverlapCircle(transform.position, zombieSO.detectRange, playerLayer);
             if (hitbox != null && hitbox.CompareTag("Player"))
             {
+                anim.SetBool("Move", true);
                 if (Vector2.Distance(transform.position, hitbox.transform.position) <= .75f)
                 {
 
@@ -60,6 +61,7 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
             }
             else if (!isDead)
             {
+                anim.SetBool("Move", true);
                 rb.linearVelocity = new Vector2(dir * zombieSO.moveSpeed, rb.linearVelocity.y);
                 curTime += Time.deltaTime;
                 if (curTime > zombieSO.wanderTime)
@@ -70,6 +72,7 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
             }
             else
             {
+                anim.SetBool("Move", false);
                 rb.linearVelocity = Vector2.zero;
             }
         }
