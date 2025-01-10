@@ -2,8 +2,6 @@ using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.iOS;
 
 public class PlayerControl : MonoBehaviour, IAttackable
 {
@@ -11,6 +9,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
     private SpriteRenderer spriteRenderer;
     private PolygonCollider2D polygonCollider;
     private Animator anim;
+    private AudioSource audioSource;
 
     public PlayerSO playerSO;
     [SerializeField] private BoxCollider2D attackRange;
@@ -22,8 +21,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
     private int curDamage;
     private int curHP;
     private int curMP;
-    private bool canAttack = true;
-    public int AttackManaGainCount = 0;
+
+    private int AttackManaGainCount = 0;
 
     #region LifeCycle
     private void Awake()
@@ -32,6 +31,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         polygonCollider = GetComponent<PolygonCollider2D>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void Start()
@@ -40,7 +40,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
         curDamage = playerSO.attackDmg;
         curHP = playerSO.maxHealth;
         curMP = playerSO.maxMana;
-        GameManager.OnHeal += PerformHeal;
+        Manager.GameManager.OnHeal += PerformHeal;
+        Manager.GameManager.OnDash += StartDashCoroutine;
     }
 
     private void Update()
@@ -49,16 +50,11 @@ public class PlayerControl : MonoBehaviour, IAttackable
         float clampedY = isTouchingWall ? Mathf.Clamp(rb.linearVelocity.y, -3f, float.MaxValue) : rb.linearVelocity.y;
         rb.linearVelocity = new Vector2(dir.x * playerSO.speedModifier, clampedY);
 
-        if (dir.x > 0)
-        {
-            spriteRenderer.flipX = false;
-            attackRange.transform.position = new Vector2(transform.position.x + 0.35f, transform.position.y);
-        }
-        else if (dir.x < 0)
-        {
-            spriteRenderer.flipX = true;
-            attackRange.transform.position = new Vector2(transform.position.x - 0.35f, transform.position.y);
-        }
+        int movedir = dir.x > 0 ? 1 : -1;
+        if (dir.x != 0) spriteRenderer.flipX = dir.x < 0;
+        attackRange.transform.position = new Vector2(transform.position.x + (0.35f * movedir), transform.position.y);
+        Manager.AudioManager.PlayFootprintLoop(dir.x != 0);
+        Manager.AudioManager.PlayBreathLoop(curHP == 1);
     }
 
     private void LateUpdate()
@@ -67,95 +63,60 @@ public class PlayerControl : MonoBehaviour, IAttackable
     }
     #endregion
 
-    #region InputAction
-    public void Move(InputAction.CallbackContext context)
+    public void PerformMove(Vector2 input)
     {
-        if (context.performed)
+        dir.x = input.x;
+        anim.SetBool("Run", dir.x != 0);
+    }
+    public void PerformJump()
+    {
+        if (isGrounded)
         {
-            Vector2 input = context.ReadValue<Vector2>();
-            dir.x = input.x;
-            anim.SetBool("Run", true);
+            isGrounded = false;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
         }
-        else
+        else if (jumpCount < playerSO.extrajump)
         {
-            dir = Vector2.zero;
-            anim.SetBool("Run", false);
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
+            jumpCount++;
         }
     }
-
-    public void Jump(InputAction.CallbackContext context)
+    public void PerformAttack()
     {
-        if (context.started)
-        {
-            if (isGrounded)
-            {
-                isGrounded = false;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
-            }
-            else if (jumpCount < playerSO.extrajump)
-            {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
-                jumpCount++;
-            }
-        }
-    }
-
-    public void Attack(InputAction.CallbackContext context)
-    {
-        if (context.started && canAttack)
+        if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Attack])
         {
             anim.SetTrigger("Attack");
-            StartCoroutine(AttackCooldown());
+            Manager.AudioManager.PlaySFX(SoundEffect.PlayerAttack);
+            StartCoroutine(Cooldown(Cooltimes.Attack, playerSO.attackSpeed));
         }
     }
-
-    public void Heal(InputAction.CallbackContext context)
-    {
-        if (context.started && playerSO.canHeal && curHP < playerSO.maxHealth)
-        {
-            GameManager.CallHeal();
-        }
-    }
-
-    public void Dash(InputAction.CallbackContext context)
-    {
-        if (context.started && playerSO.canDash)
-        {
-            Debug.Log("Dash");
-            StartCoroutine(PerformDash());
-        }
-    }
-    #endregion
-
-    private IEnumerator AttackCooldown()
-    {
-        canAttack = false;
-        yield return new WaitForSeconds(playerSO.attackSpeed);
-        canAttack = true;
-    }
-
     private void PerformHeal()
     {
-        if (curMP > 0)
+        if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Heal])
         {
-            curMP--;
-            if (curHP < playerSO.maxHealth) curHP++;
+            if (curMP > 0)
+            {
+                curMP--;
+                if (curHP < playerSO.maxHealth) curHP++;
+                StartCoroutine(Cooldown(Cooltimes.Heal, playerSO.HealCooltime));
+            }
         }
     }
-
-    public void HPchange(int num)
+    private IEnumerator Cooldown(Cooltimes skill, float cooltime)
     {
-        curHP += num;
+        Manager.GameManager.skillCooltimes[(int)skill] = false;
+        yield return new WaitForSeconds(cooltime);
+        Manager.GameManager.skillCooltimes[(int)skill] = true;
     }
-    public void MPchange(int num)
+    private void StartDashCoroutine()
     {
-        curMP += num;
+        if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Dash])
+        {
+            Debug.Log(Manager.GameManager.skillCooltimes[(int)Cooltimes.Dash]);
+            StartCoroutine(PerformDash());
+            StartCoroutine(Cooldown(Cooltimes.Dash, playerSO.DashCooltime));
+        }
     }
-    public (int, int) showHPMP()
-    {
-        return (curHP, curMP);
-    }
-
     private IEnumerator PerformDash()
     {
         int dashDir = spriteRenderer.flipX ? -1 : 1;
@@ -168,6 +129,10 @@ public class PlayerControl : MonoBehaviour, IAttackable
             yield return null;
         }
         isDashing = false;
+    }
+    public (int, int) ShowHPMP()
+    {
+        return (curHP, curMP);
     }
 
     public void SetAttackRange() { attackRange.enabled = true; }
@@ -212,7 +177,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
             if (AttackManaGainCount >= playerSO.manaRegainCount && curMP < playerSO.maxMana)
             {
                 curMP++;
-                GameManager.CallManaUp();
+                Manager.GameManager.CallManaUp();
                 AttackManaGainCount = 0;
             }
         }
@@ -222,6 +187,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
     {
         Debug.Log("Player Damaged : " + damage);
         curHP -= damage;
+        if (curHP < 0) curHP = 0;
+
         anim.SetTrigger("Hurt");
         StartCoroutine(DamagedColorChange());
         if (curHP <= 0)
@@ -229,7 +196,6 @@ public class PlayerControl : MonoBehaviour, IAttackable
             // TODO. 게임오버 창 띄우기
         }
     }
-
     public void Knockback(Vector3 pos)
     {
         rb.AddForce(new Vector2(0, 3f), ForceMode2D.Impulse);

@@ -5,40 +5,52 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager instance;
-    public static GameManager Instance
-    {
-        get
-        {
-            if(instance == null)
-            {
-                instance = FindAnyObjectByType<GameManager>();
-            }
-            return instance;
-        }
-    }
+    public UnityAction<int> OnDamaged;
+    public UnityAction OnHeal;
+    public UnityAction OnManaUp;
+    public UnityAction OnDash;
+    public UnityAction OnGetHealItem;
+    public UnityAction OnGetDashItem;
+    public UnityAction OnGetItem;
+    public UnityAction OnOption;
 
-    public static UnityAction<int> OnDamaged;
-    public static UnityAction OnHeal;
-    public static UnityAction OnManaUp;
-    void Start()
-    {
-        DontDestroyOnLoad(gameObject);
-    }
+    public int getItemNum = 99;
+    public int volume = 50;
+    public bool[] skillCooltimes = new bool[3] { true, true, true };
 
-    public static void CallDamage(int damage)
+    public void CallDamage(int damage)
     {
         OnDamaged?.Invoke(damage);
     }
-    public static void CallHeal()
+    public void CallHeal()
     {
         OnHeal?.Invoke();
     }
-    public static void CallManaUp()
+    public void CallManaUp()
     {
         OnManaUp?.Invoke();
     }
 
+    public void CallDash()
+    {
+        OnDash?.Invoke();
+    }
+    public void CallGetHealItem()
+    {
+        OnGetHealItem?.Invoke();
+    }
+    public void CallGetDashItem()
+    {
+        OnGetDashItem?.Invoke();
+    }
+    public void CallGetItem()
+    {
+        OnGetItem?.Invoke();
+    }
+    public void CallOnOption()
+    {
+        OnOption?.Invoke();
+    }
     public void OnStartButton()
     {
         SceneManager.LoadScene("inGame");

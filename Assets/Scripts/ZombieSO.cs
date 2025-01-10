@@ -14,4 +14,5 @@ public class ZombieSO : ScriptableObject
     public float attackPreDelay = 0.2f;
     public float attackAfterDelay = 1f;
     public int attackDmg = 1;
+    public SoundEffect attackSound = SoundEffect.Zombie1;
 }

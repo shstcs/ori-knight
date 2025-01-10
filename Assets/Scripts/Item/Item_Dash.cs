@@ -7,6 +7,9 @@ public class Item_Dash : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerControl>().playerSO.canDash = true;
+            Manager.GameManager.getItemNum = (int)Items.dash;
+            Manager.GameManager.CallGetItem();
+            Manager.GameManager.CallGetDashItem();
             Destroy(gameObject);
         }
     }

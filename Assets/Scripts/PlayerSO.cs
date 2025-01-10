@@ -19,4 +19,6 @@ public class PlayerSO : ScriptableObject
     public float criticalChance = 0.1f;
     public int manaRegainCount = 10;
     public float DashRange = 3f;
+    public float DashCooltime = 5f;
+    public float HealCooltime = 3f;
 }

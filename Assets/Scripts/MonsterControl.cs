@@ -1,12 +1,14 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
 {
     private Rigidbody2D rb;
     private SpriteRenderer spriteRenderer;
     private Animator anim;
+    private Light2D attackLight;
 
     [SerializeField] private ZombieSO zombieSO;
     [SerializeField] private LayerMask playerLayer;
@@ -24,6 +26,7 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        attackLight = GetComponentInChildren<Light2D>();
     }
 
     private void Start()
@@ -89,8 +92,21 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
     }
     public IEnumerator Attack()
     {
+        StartCoroutine(OnAttackLight(zombieSO.attackPreDelay));
         yield return new WaitForSeconds(zombieSO.attackPreDelay);
+        Manager.AudioManager.PlaySFX(zombieSO.attackSound);
         anim.SetTrigger("Attack");
+    }
+
+    public IEnumerator OnAttackLight(float time)
+    {
+        while(attackLight.intensity < 100)
+        {
+            attackLight.intensity += 100 * Time.deltaTime / (time + 0.2f);
+            Debug.Log(attackLight.intensity);
+            yield return null;
+        }
+        attackLight.intensity = 0;
     }
     public void SetAttackRange() { attackRange.enabled = true; }
     public void UnsetAttackRange() { attackRange.enabled = false; }
@@ -100,7 +116,7 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
     {
         if (collision.CompareTag("Player") && !collision.gameObject.GetComponent<PlayerControl>().isDashing)
         {
-            GameManager.CallDamage(zombieSO.attackDmg);
+            Manager.GameManager.CallDamage(zombieSO.attackDmg);
             collision.gameObject.GetComponent<PlayerControl>().TakeDamage(zombieSO.attackDmg);
             collision.gameObject.GetComponent<PlayerControl>().Knockback(transform.position);
         }
@@ -118,7 +134,6 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
             anim.SetTrigger("Die");
             anim.SetBool("isDead", true);
             isDead = true;
-
         }
     }
 

@@ -20,3 +20,4 @@ MonoBehaviour:
   attackPreDelay: 0.2
   attackAfterDelay: 1
   attackDmg: 1
+  attackSound: 5

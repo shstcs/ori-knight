@@ -7,6 +7,8 @@ public class Item_Climb : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             collision.gameObject.GetComponent<PlayerControl>().playerSO.canClimb = true;
+            Manager.GameManager.getItemNum = (int)Items.climb;
+            Manager.GameManager.CallGetItem();
             Destroy(gameObject);
         }
     }
