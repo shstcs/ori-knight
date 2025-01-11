@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public UnityAction OnGetDashItem;
     public UnityAction OnGetItem;
     public UnityAction OnOption;
+    public UnityAction OnClear;
 
     public int getItemNum = 99;
     public int volume = 50;
@@ -50,6 +51,10 @@ public class GameManager : MonoBehaviour
     public void CallOnOption()
     {
         OnOption?.Invoke();
+    }
+    public void CallClear()
+    {
+        OnClear?.Invoke();
     }
     public void OnStartButton()
     {

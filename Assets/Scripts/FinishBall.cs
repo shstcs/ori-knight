@@ -9,7 +9,7 @@ public class FinishBall : MonoBehaviour
         {
             if (collision.CompareTag("Player"))
             {
-                SceneManager.LoadScene("Finish");
+                Manager.GameManager.CallClear();
             }
         }
     }

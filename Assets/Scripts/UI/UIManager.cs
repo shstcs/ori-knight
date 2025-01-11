@@ -4,6 +4,7 @@ public class UIManager : MonoBehaviour
 {
     public GameObject optionUI;
     public GameObject getItemUI;
+    public GameObject ClearUI;
     private void Start()
     {
         Manager.GameManager.OnGetItem += ShowGetItemUI;
