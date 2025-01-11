@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4936438163239015521}
   - component: {fileID: 693297742452724333}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -105,7 +105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8381935470367108514
 Transform:
   m_ObjectHideFlags: 0
@@ -177,7 +177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1944978992780408798}
   - component: {fileID: 2032983173429947341}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: floor
   m_TagString: Floor
   m_Icon: {fileID: 0}

@@ -14,6 +14,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
+        Debug.Log("Jump Input");
         if (context.started) control.PerformJump();
     }
 

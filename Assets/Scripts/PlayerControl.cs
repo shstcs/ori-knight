@@ -46,6 +46,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
 
     private void Update()
     {
+        isGrounded = Physics2D.Raycast(transform.position, Vector2.down, 0.5f, LayerMask.GetMask("Floor"));
+
         isTouchingWall = Physics2D.OverlapCircle(transform.position, 0.5f, LayerMask.GetMask("Wall"));
         float clampedY = isTouchingWall ? Mathf.Clamp(rb.linearVelocity.y, -3f, float.MaxValue) : rb.linearVelocity.y;
         rb.linearVelocity = new Vector2(dir.x * playerSO.speedModifier, clampedY);
@@ -72,8 +74,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
     {
         if (isGrounded)
         {
-            isGrounded = false;
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
+            Debug.Log("Jump Perform");
         }
         else if (jumpCount < playerSO.extrajump)
         {
@@ -150,20 +152,11 @@ public class PlayerControl : MonoBehaviour, IAttackable
     {
         if (collision.gameObject.CompareTag("Floor"))
         {
-            isGrounded = true;
             jumpCount = 0;
         }
         if (collision.gameObject.CompareTag("Wall") && playerSO.canClimb)
         {
             jumpCount = 0;
-        }
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Floor"))
-        {
-            isGrounded = false;
         }
     }
 

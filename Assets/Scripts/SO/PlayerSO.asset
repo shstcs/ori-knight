@@ -16,8 +16,8 @@ MonoBehaviour:
   maxMana: 3
   speedModifier: 5
   jumpForce: 10
-  extrajump: 1
-  canHeal: 0
+  extrajump: 0
+  canHeal: 1
   canDash: 1
   canClimb: 1
   attackDmg: 10
@@ -25,3 +25,5 @@ MonoBehaviour:
   criticalChance: 0.1
   manaRegainCount: 10
   DashRange: 3
+  DashCooltime: 5
+  HealCooltime: 3

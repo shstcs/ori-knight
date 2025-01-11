@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1765741381304068151}
   - component: {fileID: 8784800597289705627}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: floor
   m_TagString: Floor
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: feb49ee6784c4d549b1fb85b9ccafcbe, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -66,7 +66,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.0030835867, y: 0.16234973}
+  m_Offset: {x: 0.0010950565, y: 0.16234973}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -76,7 +76,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.1233385, y: 0.060482144}
+  m_Size: {x: 1.1484106, y: 0.060482144}
   m_EdgeRadius: 0
 --- !u!1 &7053781245235764016
 GameObject:
@@ -120,7 +120,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: feb49ee6784c4d549b1fb85b9ccafcbe, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
