@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public UnityAction OnGetItem;
     public UnityAction OnOption;
     public UnityAction OnClear;
+    public UnityAction OnHPone;
+    public UnityAction OnHPRestore;
 
     public int getItemNum = 99;
     public int volume = 50;
@@ -55,6 +57,14 @@ public class GameManager : MonoBehaviour
     public void CallClear()
     {
         OnClear?.Invoke();
+    }
+    public void CallHPOne()
+    {
+        OnHPone?.Invoke();
+    }
+    public void CallHPRestore()
+    {
+        OnHPRestore?.Invoke();
     }
     public void OnStartButton()
     {

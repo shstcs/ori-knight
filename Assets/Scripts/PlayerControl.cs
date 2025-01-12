@@ -9,7 +9,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
     private SpriteRenderer spriteRenderer;
     private PolygonCollider2D polygonCollider;
     private Animator anim;
-    private AudioSource audioSource;
+    private ParticleSystem Healparticle;
+    private ParticleSystem Dashparticle;
 
     public PlayerSO playerSO;
     [SerializeField] private BoxCollider2D attackRange;
@@ -18,6 +19,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
     private bool isGrounded = true;
     private bool isTouchingWall = false;
     public bool isDashing = false;
+    private bool isHPone = false;
     private int curDamage;
     private int curHP;
     private int curMP;
@@ -31,7 +33,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
         anim = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         polygonCollider = GetComponent<PolygonCollider2D>();
-        audioSource = GetComponent<AudioSource>();
+        Healparticle = GetComponentsInChildren<ParticleSystem>()[0];
+        Dashparticle = GetComponentsInChildren<ParticleSystem>()[1];
     }
 
     private void Start()
@@ -42,6 +45,8 @@ public class PlayerControl : MonoBehaviour, IAttackable
         curMP = playerSO.maxMana;
         Manager.GameManager.OnHeal += PerformHeal;
         Manager.GameManager.OnDash += StartDashCoroutine;
+        Manager.GameManager.OnHPone += () => Manager.AudioManager.PlayBreathLoop(true);
+        Manager.GameManager.OnHPRestore += () => Manager.AudioManager.PlayBreathLoop(false);
     }
 
     private void Update()
@@ -56,7 +61,6 @@ public class PlayerControl : MonoBehaviour, IAttackable
         if (dir.x != 0) spriteRenderer.flipX = dir.x < 0;
         attackRange.transform.position = new Vector2(transform.position.x + (0.35f * movedir), transform.position.y);
         Manager.AudioManager.PlayFootprintLoop(dir.x != 0);
-        Manager.AudioManager.PlayBreathLoop(curHP == 1);
     }
 
     private void LateUpdate()
@@ -100,7 +104,13 @@ public class PlayerControl : MonoBehaviour, IAttackable
             {
                 curMP--;
                 if (curHP < playerSO.maxHealth) curHP++;
+                if(isHPone)
+                {
+                    isHPone = false;
+                    Manager.GameManager.CallHPRestore();
+                }
                 StartCoroutine(Cooldown(Cooltimes.Heal, playerSO.HealCooltime));
+                Healparticle.Play();
             }
         }
     }
@@ -128,6 +138,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
         {
             transform.position = new Vector3(transform.position.x + (0.5f * dashDir), transform.position.y, transform.position.z);
             range -= 0.5f;
+            Dashparticle.Play();
             yield return null;
         }
         isDashing = false;
@@ -181,6 +192,11 @@ public class PlayerControl : MonoBehaviour, IAttackable
         Debug.Log("Player Damaged : " + damage);
         curHP -= damage;
         if (curHP < 0) curHP = 0;
+        else if (curHP == 1)
+        {
+            Manager.GameManager.CallHPOne();
+            isHPone = true;
+        }
 
         anim.SetTrigger("Hurt");
         StartCoroutine(DamagedColorChange());
