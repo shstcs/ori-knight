@@ -21,5 +21,6 @@ public enum Cooltimes
 {
     Attack,
     Dash,
-    Heal
+    Heal,
+    Parry
 }

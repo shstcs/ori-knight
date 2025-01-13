@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     public int getItemNum = 99;
     public int volume = 50;
-    public bool[] skillCooltimes = new bool[3] { true, true, true };
+    public bool[] skillCooltimes = new bool[4] { true, true, true, true };
 
     public void CallDamage(int damage)
     {

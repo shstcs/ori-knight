@@ -9,21 +9,35 @@ public class Manager : MonoBehaviour
         {
             if (instance == null)
             {
-                instance = FindAnyObjectByType<Manager>();
+                Init();
             }
             return instance;
         }
     }
+    private static void Init()
+    {
+        GameObject go = GameObject.Find("Manager");
 
-    private static readonly GameManager gameManager = new();
-    private static readonly UIManager uiManager = new();
-    private static AudioManager audioManager;
+        if (!go)
+        {
+            go = new GameObject("Manager");
+            go.AddComponent<Manager>();
+        }
+        DontDestroyOnLoad(go);
+        instance = go.GetComponent<Manager>();
+    }
+
+    private readonly GameManager gameManager = new();
+    private readonly UIManager uiManager = new();
+    private AudioManager audioManager;
     private void Awake()
     {
+        Init();
+        if(instance != this) Destroy(gameObject);
         audioManager = GetComponent<AudioManager>();
         DontDestroyOnLoad(gameObject);
     }
-    public static GameManager GameManager { get { return gameManager; } }
-    public static UIManager UIManager { get { return uiManager; } }
-    public static AudioManager AudioManager { get { return audioManager; } }
+    public static GameManager GameManager => instance?.gameManager;
+    public static UIManager UIManager => instance?.uiManager;
+    public static AudioManager AudioManager => instance?.audioManager;
 }

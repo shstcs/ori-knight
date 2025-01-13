@@ -27,7 +27,7 @@
                     "name": "Attack",
                     "type": "Button",
                     "id": "6c2ab1b8-8984-453a-af3d-a3c78ae1679a",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -99,6 +99,15 @@
                     "name": "Option",
                     "type": "Button",
                     "id": "38a0ca1f-a6b2-4063-a5ff-fc37a1d6131b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Parry",
+                    "type": "Button",
+                    "id": "2d2522c2-9047-4524-9bfa-ca24b847f95b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -510,6 +519,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Option",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a544d272-02bb-491c-87fb-ad150acef841",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Parry",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

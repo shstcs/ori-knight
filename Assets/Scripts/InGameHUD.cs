@@ -16,6 +16,11 @@ public class InGameHUD : MonoBehaviour
 
     private void Awake()
     {
+        HealCooltimeIcon = HealIcon.GetComponentsInChildren<Image>()[1];
+        DashCooltimeIcon = DashIcon.GetComponentsInChildren<Image>()[1];
+    }
+    private void Start()
+    {
         Manager.GameManager.OnDamaged += DecreaseHP;
         Manager.GameManager.OnHeal += HealingUI;
         Manager.GameManager.OnManaUp += ManaGain;
@@ -23,11 +28,6 @@ public class InGameHUD : MonoBehaviour
         Manager.GameManager.OnGetHealItem += () => HealIcon.SetActive(true);
         Manager.GameManager.OnGetDashItem += () => DashIcon.SetActive(true);
 
-        HealCooltimeIcon = HealIcon.GetComponentsInChildren<Image>()[1];
-        DashCooltimeIcon = DashIcon.GetComponentsInChildren<Image>()[1];
-    }
-    private void Start()
-    {
         HealCooltimeIcon.fillAmount = 0;
         DashCooltimeIcon.fillAmount = 0;
         HealIcon.SetActive(false);

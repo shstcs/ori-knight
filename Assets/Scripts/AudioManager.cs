@@ -15,12 +15,15 @@ public class AudioManager : MonoBehaviour
         breathe = audioSourcePool.GetAudioSource();
         footprint.clip = Clips[(int)SoundEffect.PlayerWalk];
         breathe.clip = Clips[((int)SoundEffect.PlayerBreath)];
+        footprint.loop = true;
+        breathe.loop = true;
     }
 
     public void PlaySFX(SoundEffect sound)
     {
         AudioSource source = audioSourcePool.GetAudioSource();
         source.clip = Clips[(int)sound];
+        source.volume = 0.5f;
         source.Play();
         StartCoroutine(ReturnSourceWhenFinished(source));
     }

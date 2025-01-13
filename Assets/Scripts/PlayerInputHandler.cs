@@ -49,4 +49,11 @@ public class PlayerInputHandler : MonoBehaviour
             Manager.GameManager.CallOnOption();
         }
     }
+    public void Parry(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            control.PerformParry();
+        }
+    }
 }

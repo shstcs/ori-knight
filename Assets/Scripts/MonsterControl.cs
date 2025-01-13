@@ -116,9 +116,12 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
     {
         if (collision.CompareTag("Player") && !collision.gameObject.GetComponent<PlayerControl>().isDashing)
         {
-            Manager.GameManager.CallDamage(zombieSO.attackDmg);
+            if (!collision.GetComponent<PlayerControl>().isParrying)
+            {
+                Manager.GameManager.CallDamage(zombieSO.attackDmg);
+                collision.gameObject.GetComponent<PlayerControl>().Knockback(transform.position);
+            }
             collision.gameObject.GetComponent<PlayerControl>().TakeDamage(zombieSO.attackDmg);
-            collision.gameObject.GetComponent<PlayerControl>().Knockback(transform.position);
         }
     }
 
