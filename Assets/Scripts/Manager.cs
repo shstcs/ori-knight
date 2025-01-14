@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Manager : MonoBehaviour
@@ -17,25 +18,26 @@ public class Manager : MonoBehaviour
     private static void Init()
     {
         GameObject go = GameObject.Find("Manager");
-
+        Debug.Log(go);
         if (!go)
         {
             go = new GameObject("Manager");
             go.AddComponent<Manager>();
         }
-        DontDestroyOnLoad(go);
+
         instance = go.GetComponent<Manager>();
     }
 
-    private readonly GameManager gameManager = new();
-    private readonly UIManager uiManager = new();
+    private GameManager gameManager;
+    private UIManager uiManager;
     private AudioManager audioManager;
     private void Awake()
     {
-        Init();
-        if(instance != this) Destroy(gameObject);
+        instance = this;
+        gameManager = gameObject.AddComponent<GameManager>();
+        uiManager = FindAnyObjectByType<UIManager>();
         audioManager = GetComponent<AudioManager>();
-        DontDestroyOnLoad(gameObject);
+        Debug.Log(uiManager.gameObject);
     }
     public static GameManager GameManager => instance?.gameManager;
     public static UIManager UIManager => instance?.uiManager;

@@ -8,10 +8,11 @@ public class AudioSourcePool : MonoBehaviour
 {
     public int poolSize = 10; // 풀의 크기
 
-    private Queue<AudioSource> pool = new Queue<AudioSource>();
+    private Queue<AudioSource> pool;
 
-    public void setAudoiPool()
+    public void SetAudoiPool()
     {
+        pool = new Queue<AudioSource>();
         for (int i = 0; i < poolSize; i++)
         {
             GameObject obj = Instantiate(Resources.Load<GameObject>("AudioSource"));

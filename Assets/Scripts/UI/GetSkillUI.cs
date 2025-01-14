@@ -19,9 +19,8 @@ public class GetSkillUI : MonoBehaviour
     private void OnEnable()
     {
         Time.timeScale = 0;
-        if(Manager.GameManager.getItemNum != 99)
+        if (Manager.GameManager != null && Manager.GameManager.getItemNum != 99)
         {
-            Debug.Log(Manager.GameManager.getItemNum);
             SkillImage.sprite = Icons[Manager.GameManager.getItemNum];
             skillText.text = explains[Manager.GameManager.getItemNum];
         }

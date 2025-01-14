@@ -103,7 +103,6 @@ public class MonsterControl : MonoBehaviour, IAttackable, IKnockbackable
         while(attackLight.intensity < 100)
         {
             attackLight.intensity += 100 * Time.deltaTime / (time + 0.2f);
-            Debug.Log(attackLight.intensity);
             yield return null;
         }
         attackLight.intensity = 0;

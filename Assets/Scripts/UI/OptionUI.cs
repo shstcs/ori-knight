@@ -20,7 +20,7 @@ public class OptionUI : MonoBehaviour
     private void OnEnable()
     {
         Time.timeScale = 0;
-        volume.value = Manager.GameManager.volume;
+        if(Manager.GameManager != null) volume.value = Manager.GameManager.volume;
     }
 
     private void OnDisable()

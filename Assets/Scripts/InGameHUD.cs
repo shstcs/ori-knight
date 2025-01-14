@@ -25,8 +25,8 @@ public class InGameHUD : MonoBehaviour
         Manager.GameManager.OnHeal += HealingUI;
         Manager.GameManager.OnManaUp += ManaGain;
         Manager.GameManager.OnDash += UseDashSkill;
-        Manager.GameManager.OnGetHealItem += () => HealIcon.SetActive(true);
-        Manager.GameManager.OnGetDashItem += () => DashIcon.SetActive(true);
+        Manager.GameManager.OnGetHealItem += ActiveHealIcon;
+        Manager.GameManager.OnGetDashItem += ActiveDashIcon;
 
         HealCooltimeIcon.fillAmount = 0;
         DashCooltimeIcon.fillAmount = 0;
@@ -34,6 +34,8 @@ public class InGameHUD : MonoBehaviour
         DashIcon.SetActive(false);
     }
 
+    private void ActiveHealIcon() { HealIcon.SetActive(true); }
+    private void ActiveDashIcon() { DashIcon.SetActive(true); }
     public void DecreaseHP(int damage)
     {
         curHP = player.GetComponent<PlayerControl>().ShowHPMP().Item1;
@@ -46,25 +48,22 @@ public class InGameHUD : MonoBehaviour
     }
     public void HealingUI()
     {
-        if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Heal])
-        {
-            ChangeHealStatus();
-            ShowHealCooldown();
-        }
+        ChangeHealStatus();
+        ShowHealCooldown();
     }
     public void ChangeHealStatus()
     {
         (curHP, curMP) = player.GetComponent<PlayerControl>().ShowHPMP();
-
-        heart[curHP].enabled = true;
-        mana[curMP - 1].enabled = false;
+        Debug.Log("hp : " + curHP + "mp : " + curMP);
+        heart[curHP - 1].enabled = true;
+        mana[curMP].enabled = false;
     }
 
     public void ManaGain()
     {
         curMP = player.GetComponent<PlayerControl>().ShowHPMP().Item2;
 
-        mana[curMP-1].enabled = true;
+        mana[curMP - 1].enabled = true;
     }
     private void ShowHealCooldown()
     {
@@ -78,7 +77,7 @@ public class InGameHUD : MonoBehaviour
     private IEnumerator CoolDown(Image skill, float cooltime)
     {
         skill.fillAmount = 1;
-        while(skill.fillAmount > 0)
+        while (skill.fillAmount > 0)
         {
             skill.fillAmount -= Time.deltaTime / cooltime;
             yield return null;

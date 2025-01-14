@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Windows;
@@ -14,7 +15,6 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
-        Debug.Log("Jump Input");
         if (context.started) control.PerformJump();
     }
 
@@ -30,7 +30,8 @@ public class PlayerInputHandler : MonoBehaviour
     {
         if (context.started && control.playerSO.canHeal && control.ShowHPMP().Item1 < control.playerSO.maxHealth)
         {
-            Manager.GameManager.CallHeal();
+            if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Heal])
+                Manager.GameManager.CallHeal();
         }
     }
 

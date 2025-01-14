@@ -12,6 +12,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
     private Animator anim;
     private ParticleSystem Healparticle;
     private ParticleSystem Dashparticle;
+    private ParticleSystem Moveparticle;
 
     public PlayerSO playerSO;
     [SerializeField] private BoxCollider2D attackRange;
@@ -25,6 +26,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
     private int curDamage;
     private int curHP;
     private int curMP;
+    private float moveParticleCount = 0;
 
     private int AttackManaGainCount = 0;
 
@@ -38,6 +40,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
         polygonCollider = GetComponent<PolygonCollider2D>();
         Healparticle = GetComponentsInChildren<ParticleSystem>()[0];
         Dashparticle = GetComponentsInChildren<ParticleSystem>()[1];
+        Moveparticle = GetComponentsInChildren<ParticleSystem>()[2];
     }
 
     private void Start()
@@ -51,6 +54,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
         Manager.GameManager.OnDash += StartDashCoroutine;
         Manager.GameManager.OnHPone += () => Manager.AudioManager.PlayBreathLoop(true);
         Manager.GameManager.OnHPRestore += () => Manager.AudioManager.PlayBreathLoop(false);
+        Manager.AudioManager.PlayBGM(true);
     }
 
     private void Update()
@@ -60,6 +64,12 @@ public class PlayerControl : MonoBehaviour, IAttackable
         float clampedY = isTouchingWall ? Mathf.Clamp(rb.linearVelocity.y, -3f, float.MaxValue) : rb.linearVelocity.y;
         float moveValue = isParrying ? 0 : dir.x;
         rb.linearVelocity = new Vector2(moveValue * playerSO.speedModifier, clampedY);
+
+        if(isGrounded)
+        {
+            if (moveParticleCount > 0.5f) { Moveparticle.Play(); moveParticleCount = 0; }
+        }
+        moveParticleCount += Time.deltaTime;
 
         int movedir = dir.x > 0 ? 1 : -1;
         if (dir.x != 0 && !isParrying) playerSprite.flipX = dir.x < 0;
@@ -84,16 +94,17 @@ public class PlayerControl : MonoBehaviour, IAttackable
         if (isGrounded)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
-            Debug.Log("Jump Perform");
         }
         else if (jumpCount < playerSO.extrajump)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, playerSO.jumpForce);
             jumpCount++;
         }
+        Manager.AudioManager.PlaySFX(SoundEffect.PlayerJump);
     }
     public void PerformAttack()
     {
+        Debug.Log("in Attack - " + Manager.GameManager);
         if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Attack])
         {
             anim.SetTrigger("Attack");
@@ -103,24 +114,23 @@ public class PlayerControl : MonoBehaviour, IAttackable
     }
     private void PerformHeal()
     {
-        if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Heal])
+        Manager.AudioManager.PlaySFX(SoundEffect.PlayerHeal);
+        if (curMP > 0)
         {
-            if (curMP > 0)
+            curMP--;
+            if (curHP < playerSO.maxHealth) curHP++;
+            if (isHPone)
             {
-                curMP--;
-                if (curHP < playerSO.maxHealth) curHP++;
-                if (isHPone)
-                {
-                    isHPone = false;
-                    Manager.GameManager.CallHPRestore();
-                }
-                StartCoroutine(Cooldown(Cooltimes.Heal, playerSO.HealCooltime));
-                Healparticle.Play();
+                isHPone = false;
+                Manager.GameManager.CallHPRestore();
             }
+            StartCoroutine(Cooldown(Cooltimes.Heal, playerSO.HealCooltime));
+            Healparticle.Play();
         }
     }
     private IEnumerator PerformDash()
     {
+        Manager.AudioManager.PlaySFX(SoundEffect.PlayerDash);
         int dashDir = playerSprite.flipX ? -1 : 1;
         float range = playerSO.DashRange;
         isDashing = true;
@@ -157,7 +167,6 @@ public class PlayerControl : MonoBehaviour, IAttackable
     {
         if (Manager.GameManager.skillCooltimes[(int)Cooltimes.Dash])
         {
-            Debug.Log(Manager.GameManager.skillCooltimes[(int)Cooltimes.Dash]);
             StartCoroutine(PerformDash());
             StartCoroutine(Cooldown(Cooltimes.Dash, playerSO.DashCooltime));
         }
@@ -167,7 +176,7 @@ public class PlayerControl : MonoBehaviour, IAttackable
     {
         isParrying = true;
         parrySprite.enabled = true;
-        anim.SetBool("isParry",true);
+        anim.SetBool("isParry", true);
 
         yield return new WaitForSeconds(0.5f);
 

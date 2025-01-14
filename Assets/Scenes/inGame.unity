@@ -739,7 +739,7 @@ Transform:
   m_GameObject: {fileID: 294808164}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 90.07, y: 31.6, z: 10}
+  m_LocalPosition: {x: -0.5, y: -1.2, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4003,7 +4003,7 @@ AudioSource:
   m_audioClip: {fileID: 8300000, guid: a49a68333704b3940851c05f4d812642, type: 3}
   m_Resource: {fileID: 8300000, guid: a49a68333704b3940851c05f4d812642, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -4131,6 +4131,9 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 93dafe54f97664d43ab7b23348a61cc6, type: 3}
   - {fileID: 8300000, guid: 55daf2a868742f54895910ba19572d3e, type: 3}
   - {fileID: 8300000, guid: 722cc2cfd16b6634eba981dae76d6d13, type: 3}
+  - {fileID: 8300000, guid: 794ee195d2b08c745ba7d3461978c731, type: 3}
+  - {fileID: 8300000, guid: dadb4fb521ff3734c96890e1d1003167, type: 3}
+  - {fileID: 8300000, guid: 2eee1eb2e17d79b4f9ce8f9e861b8362, type: 3}
   - {fileID: 8300000, guid: 4bbba2e2c1dd67a4d8b4cd098fc90e0b, type: 3}
   - {fileID: 8300000, guid: df8074356ec296240bb1f9855193b7be, type: 3}
   footprint: {fileID: 0}

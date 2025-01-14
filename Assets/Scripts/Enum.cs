@@ -7,6 +7,9 @@ public enum SoundEffect
     PlayerAttack,
     PlayerWalk,
     PlayerBreath,
+    PlayerJump,
+    PlayerDash,
+    PlayerHeal,
     Zombie1,
     Zombie2
 }
