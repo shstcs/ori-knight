@@ -21,17 +21,22 @@ public class InGameHUD : MonoBehaviour
     }
     private void Start()
     {
+        StartCoroutine(HangActions());
+        HealCooltimeIcon.fillAmount = 0;
+        DashCooltimeIcon.fillAmount = 0;
+        HealIcon.SetActive(false);
+        DashIcon.SetActive(false);
+    }
+
+    private IEnumerator HangActions()
+    {
+        yield return new WaitForSeconds(0.5f);
         Manager.GameManager.OnDamaged += DecreaseHP;
         Manager.GameManager.OnHeal += HealingUI;
         Manager.GameManager.OnManaUp += ManaGain;
         Manager.GameManager.OnDash += UseDashSkill;
         Manager.GameManager.OnGetHealItem += ActiveHealIcon;
         Manager.GameManager.OnGetDashItem += ActiveDashIcon;
-
-        HealCooltimeIcon.fillAmount = 0;
-        DashCooltimeIcon.fillAmount = 0;
-        HealIcon.SetActive(false);
-        DashIcon.SetActive(false);
     }
 
     private void ActiveHealIcon() { HealIcon.SetActive(true); }

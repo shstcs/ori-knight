@@ -9,6 +9,6 @@ public class StartUI : MonoBehaviour
     }
     public void ExitButton()
     {
-        //게임 종료
+        Application.Quit();
     }
 }

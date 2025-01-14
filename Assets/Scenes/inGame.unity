@@ -739,7 +739,7 @@ Transform:
   m_GameObject: {fileID: 294808164}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.5, y: -1.2, z: 10}
+  m_LocalPosition: {x: 90.7, y: 31, z: 10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2006,7 +2006,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   optionUI: {fileID: 621557949}
   getItemUI: {fileID: 1083745147}
-  ClearUI: {fileID: 0}
+  ClearUI: {fileID: 2810697857413950172, guid: 7d1adeaea6b31f840b585122e1a0ab76, type: 3}
 --- !u!1001 &778348110
 PrefabInstance:
   m_ObjectHideFlags: 0
